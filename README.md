@@ -31,9 +31,6 @@ edtech-recorded-lectures-dashboard/
 │   └── Online_Courses.csv
 │
 ├── screenshots/
-│
-├── dax-measures/
-│   └── DAX_Measures.txt
 |
 └── documentation/
     ├── Problem_Statement.pdf
