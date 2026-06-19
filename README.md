@@ -34,9 +34,7 @@ edtech-recorded-lectures-dashboard/
 |
 └── documentation/
     ├── Problem_Statement.pdf
-    ├── Data_Model.png
-    └── Dashboard_Insights.pdf
-```
+    
 
 ---
 
