@@ -30,7 +30,7 @@ edtech-recorded-lectures-dashboard/
 ├── data/
 │   └── Online_Courses.csv
 │
-├── screenshots/
+├── dashboard_screenshots/
 |
 └── documentation/
     ├── Problem_Statement.pdf
