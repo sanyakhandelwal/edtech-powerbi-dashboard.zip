@@ -1,31 +1,57 @@
-# EdTech Startup — Recorded Lectures Analytics Dashboard
+#  EdTech Startup – Recorded Lectures Analytics Dashboard
 
-> A Power BI analytics solution for an EdTech startup looking to expand its recorded lecture offerings. This project transforms raw course data from multiple platforms into a category-wise strategic intelligence dashboard.
-
----
-
-## Project Overview
-
-An EdTech startup collected course data from various online learning platforms and required a structured analytical approach to:
-
-- Understand the scale and quality of available course content.
-- Identify high-performing categories, sub-categories, and languages.
-- Discover instructor talent worth approaching for content creation.
-- Determine optimal course duration and subtitle strategies.
-
-The analysis is category-centric and answers 10 business questions through interactive dashboards and DAX-driven KPIs.
+A Power BI analytics solution developed for an EdTech startup looking to expand its recorded lecture offerings. This project transforms raw course data from multiple online learning platforms into actionable business insights that help identify high-performing categories, language preferences, instructor opportunities, and viewer engagement trends.
 
 ---
 
-## Dataset
+##  Project Objective
+
+The EdTech startup wanted to analyze recorded course offerings across various platforms to:
+
+- Understand the scale and quality of available content.
+- Identify popular categories and sub-categories.
+- Determine audience language preferences.
+- Analyze the impact of subtitles on viewership.
+- Discover top-rated instructors for potential collaborations.
+- Optimize course duration and accessibility strategies.
+
+The analysis is category-centric and addresses 10 key business questions through interactive Power BI dashboards.
+
+---
+
+#  Repository Structure
+
+```
+edtech-recorded-lectures-dashboard/
+│
+├── README.md
+├── EdTech_Recorded_Lectures_Analytics.pbix
+│
+├── data/
+│   └── Online_Courses.csv
+│
+├── screenshots/
+│
+├── dax-measures/
+│   └── DAX_Measures.txt
+|
+└── documentation/
+    ├── Problem_Statement.pdf
+    ├── Data_Model.png
+    └── Dashboard_Insights.pdf
+```
+
+---
+
+#  Dataset Information
 
 | Attribute | Details |
-|------------|---------|
-| Source File | Online_Courses.csv |
-| Total Records | ~8,092 courses |
-| Platforms Covered | Coursera, Udemy, edX, FutureLearn, and others |
+|------------|----------|
+| Source | Online_Courses.csv |
+| Total Records | ~8,092 Courses |
 | Total Columns | 45 |
-| Categories | 18 unique categories |
+| Platforms Covered | Coursera, Udemy, edX, FutureLearn, and others |
+| Categories | 18 Unique Categories |
 
 ### Key Columns
 
@@ -43,43 +69,86 @@ The analysis is category-centric and answers 10 business questions through inter
 
 ---
 
-## Data Preparation
+#  Data Preparation (Power Query)
 
-The following transformations were performed using Power Query:
+The dataset was cleaned and transformed using Power Query:
 
-1. Removed irrelevant columns.
-2. Cleaned Rating column and converted to decimal.
-3. Converted Number of Viewers into numeric format.
-4. Replaced null values with "Not Specified".
-5. Parsed and standardized Duration values.
-6. Split multiple instructors for instructor-level analysis.
-7. Created supporting dimension tables.
-8. Built a star schema data model with relationships.
+### ✔ Removed unnecessary columns
+Dropped platform-specific attributes and irrelevant metadata.
+
+### ✔ Cleaned Rating column
+Removed text values and converted ratings to decimal format.
+
+### ✔ Converted Number of Viewers
+Removed commas and changed datatype to Whole Number.
+
+### ✔ Handled missing values
+Replaced blanks in:
+
+- Language
+- Subtitle Languages
+- Course Type
+
+with **"Not Specified"**.
+
+### ✔ Standardized Duration column
+Extracted numerical values from text and applied business rules for flexible and monthly courses.
+
+### ✔ Processed Instructor information
+Separated multiple instructors to enable individual-level analysis.
+
+### ✔ Created supporting dimension tables
+
+- Category
+- Sub-Category
+- Language
+- Instructor
+
+### ✔ Established relationships
+Implemented a Star Schema for efficient modeling and improved report performance.
 
 ---
 
-## Dashboard Insights
+#  Data Model
 
-The dashboard answers the following business questions:
+The report follows a Star Schema approach:
 
-| Question | Visual |
-|------------|--------|
-| Total number of courses | KPI Card |
-| Average course rating | KPI Card |
-| Total and average viewers | KPI Cards |
-| Course type distribution by category and sub-category | Stacked Bar Chart |
-| Average views by category, sub-category, and language | Bar Chart |
-| Language distribution across courses | Donut Chart |
-| Language preference by category | Clustered Bar Chart |
-| Subtitle availability vs views | Grouped Bar Chart |
-| Top 3 instructors by category and sub-category | Matrix |
-| Course duration vs views | Scatter Plot |
+```
+                 Category Dimension
+                         │
+                         │
+Language Dimension ─ Fact Online Courses ─ Instructor Dimension
+                         │
+                         │
+                Sub-Category Dimension
+```
+
+This structure simplifies calculations and improves dashboard performance.
 
 ---
 
-# DAX Measures Used
+#  Business Questions Answered
 
-The dashboard utilizes several DAX functions to create KPIs and perform advanced calculations.
+| # | Business Question | Visual Used |
+|---|------------------|-------------|
+| 1 | Total number of courses | KPI Card |
+| 2 | Average course rating | KPI Card |
+| 3 | Total and average viewers | KPI Cards |
+| 4 | Course type distribution by category and sub-category | Stacked Bar Chart |
+| 5 | Average views by category, sub-category, and language | Bar Chart |
+| 6 | Distribution of languages across courses | Donut Chart |
+| 7 | Language preferences by category | Clustered Bar Chart |
+| 8 | Subtitle availability versus viewers | Grouped Bar Chart |
+| 9 | Top 3 instructors by category and sub-category | Matrix |
+| 10 | Course duration versus viewers | Scatter Plot |
+
+---
+
+#  DAX Measures and Functions Used
+
+The dashboard leverages DAX for KPI calculations, context manipulation, filtering, and ranking.
+
+---
 
 ## Aggregate Functions
 
@@ -90,18 +159,18 @@ Total Courses =
 COUNT('Online Courses'[Title])
 ```
 
-### Average Rating
-
-```DAX
-Average Rating =
-AVERAGE('Online Courses'[Rating])
-```
-
 ### Total Viewers
 
 ```DAX
 Total Viewers =
 SUM('Online Courses'[Number of viewers])
+```
+
+### Average Rating
+
+```DAX
+Average Rating =
+AVERAGE('Online Courses'[Rating])
 ```
 
 ### Average Viewers
@@ -113,11 +182,9 @@ AVERAGE('Online Courses'[Number of viewers])
 
 ---
 
-## CALCULATE Function
+## CALCULATE()
 
-Used to modify filter context and create custom calculations.
-
-### Courses Above 4.5 Rating
+Used to modify filter context and create custom metrics.
 
 ```DAX
 Highly Rated Courses =
@@ -129,11 +196,9 @@ CALCULATE(
 
 ---
 
-## ALL Function
+## ALL()
 
-Removes filters and calculates overall values.
-
-### Percentage of Total Viewers
+Removes filters to calculate overall totals.
 
 ```DAX
 Viewer Share % =
@@ -148,11 +213,9 @@ DIVIDE(
 
 ---
 
-## ALLEXCEPT Function
+## ALLEXCEPT()
 
-Preserves Category filters while removing others.
-
-### Category-wise Total Viewers
+Retains category filters while removing others.
 
 ```DAX
 Category Viewers =
@@ -165,45 +228,11 @@ CALCULATE(
 )
 ```
 
-This allows comparison of sub-categories within each category.
-
 ---
 
-## RANKX Function
+## FILTER()
 
-Used to identify top instructors.
-
-```DAX
-Instructor Rank =
-RANKX(
-    ALL('Instructor Table'[Instructor]),
-    [Average Rating],
-    ,
-    DESC
-)
-```
-
-This measure is used to identify the Top 3 instructors for each category and sub-category.
-
----
-
-## DIVIDE Function
-
-Used for safe division and percentage calculations.
-
-```DAX
-Average Views Per Course =
-DIVIDE(
-    [Total Viewers],
-    [Total Courses]
-)
-```
-
----
-
-## FILTER Function
-
-Used inside CALCULATE for conditional calculations.
+Used for conditional calculations.
 
 ```DAX
 Courses With Subtitles =
@@ -218,59 +247,178 @@ CALCULATE(
 
 ---
 
-## Data Model
+## DIVIDE()
 
-A Star Schema was implemented:
+Performs safe division operations.
 
-- Fact Table: Online Courses
-- Dimension Tables:
-  - Category
-  - Sub-Category
-  - Language
-  - Instructor
-
-This structure improves performance and simplifies DAX calculations.
-
----
-
-## Tools Used
-
-| Tool | Purpose |
-|--------|---------|
-| Power BI Desktop | Dashboard development |
-| Power Query (M) | Data cleaning and transformation |
-| DAX | Measures, KPIs and analytical calculations |
-| Microsoft Excel / CSV | Data source |
+```DAX
+Average Views Per Course =
+DIVIDE(
+    [Total Viewers],
+    [Total Courses]
+)
+```
 
 ---
 
-## Key DAX Functions Applied
+## RANKX()
+
+Used to identify top instructors.
+
+```DAX
+Instructor Rank =
+RANKX(
+    ALL('Instructor Table'[Instructor]),
+    [Average Rating],
+    ,
+    DESC
+)
+```
+
+---
+
+#  DAX Concepts Applied
+
+### Aggregation Functions
 
 - SUM()
-- AVERAGE()
 - COUNT()
 - COUNTROWS()
+- AVERAGE()
+
+### Context Modification Functions
+
 - CALCULATE()
 - ALL()
 - ALLEXCEPT()
+
+### Filtering Functions
+
 - FILTER()
+
+### Mathematical Functions
+
 - DIVIDE()
+
+### Ranking Functions
+
 - RANKX()
 
 ---
 
-## Author
+#  Dashboard Features
+
+✔ Interactive KPI Cards
+
+✔ Category and Sub-category Analysis
+
+✔ Language Distribution Analysis
+
+✔ Viewer Engagement Insights
+
+✔ Subtitle Impact Analysis
+
+✔ Instructor Ranking Analysis
+
+✔ Duration versus Views Analysis
+
+✔ Dynamic DAX Measures
+
+✔ Star Schema Data Model
+
+✔ Business-Oriented Insights
+
+---
+
+#  Dashboard Pages
+
+### Overview Page
+Provides high-level KPIs including:
+
+- Total Courses
+- Average Rating
+- Total Viewers
+- Average Viewers
+
+### Category Analysis
+Analyzes course distribution across categories and sub-categories.
+
+### Language Analysis
+Identifies language trends and audience preferences.
+
+### Subtitle Analysis
+Evaluates the relationship between subtitle availability and viewership.
+
+### Instructor Analysis
+Highlights the top three instructors based on ratings.
+
+### Duration Analysis
+Studies the relationship between course duration and viewer engagement.
+
+---
+
+#  Tools and Technologies
+
+| Tool | Purpose |
+|--------|---------|
+| Power BI Desktop | Dashboard Development |
+| Power Query (M) | Data Cleaning and Transformation |
+| DAX | Measures and Analytical Calculations |
+| Microsoft Excel / CSV | Data Source |
+| Data Modeling | Star Schema Implementation |
+
+---
+
+#  How to Use
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/your-username/edtech-recorded-lectures-dashboard.git
+```
+
+### Open the Power BI Report
+
+Open:
+
+```
+EdTech_Recorded_Lectures_Analytics.pbix
+```
+
+using Power BI Desktop.
+
+### Refresh Data Source
+
+Navigate to:
+
+```
+Home → Transform Data → Data Source Settings
+```
+
+Update the CSV file path if necessary and click:
+
+```
+Close & Apply
+```
+
+---
+
+#  Screenshots
+
+Dashboard screenshots are available inside the **screenshots/** folder.
+
+---
+
+#  Author
 
 **Sanya Khandelwal**
 
 Data Analyst | Power BI Developer
 
-LinkedIn: https://www.linkedin.com/in/sanya-khandelwal-data-analyst/
-
-GitHub: https://github.com/sanyakhandelwal
-
+- LinkedIn: https://www.linkedin.com/in/sanya-khandelwal-data-analyst/
+- GitHub: https://github.com/sanyakhandelwal
 ---
 
-## License
+# 📜 License
 
-This project is intended for portfolio and educational purposes. The dataset was collected from publicly available EdTech platforms.
+This project is intended for educational and portfolio purposes. The dataset was collected from publicly available EdTech platforms.
