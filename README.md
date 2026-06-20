@@ -1,4 +1,4 @@
-# EdTech Recorded Lectures — Analytics Dashboard
+# EdTech Startup — Recorded Lectures Analytics Dashboard
 
 A Power BI dashboard built for an EdTech startup to analyse online course data scraped from multiple EdTech platforms. The project covers end-to-end data analysis: cleaning raw data, building a relational data model, authoring DAX measures, and delivering a category-centric interactive dashboard.
 
